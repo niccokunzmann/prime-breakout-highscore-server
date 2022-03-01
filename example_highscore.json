@@ -1,0 +1,20 @@
+{
+  version: 1,
+  scores: [
+    {
+      id: 1,
+      name: "Example Beginner",
+      points: 0
+    },
+    {
+      id: 2,
+      name: "Example Player",
+      points: 42
+    },
+    {
+      id: 3,
+      name: "Example Player",
+      points: 0
+    }
+  ]
+}
