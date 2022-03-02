@@ -16,7 +16,7 @@ from urllib.parse import urlencode, quote
 DEBUG = os.environ.get("APP_DEBUG", "true").lower() == "true"
 HOST = os.environ.get("HOSTNAME", "prime-breakout-highscore-server")
 PORT = int(os.environ.get("PORT", "5000"))
-DEFAULT_HIGH_SCORE_SOURCE_URL = "https://gitlab.com/niccokunzmann/prime-breakout-highscore-server/-/raw/score/highscore.json";
+DEFAULT_HIGH_SCORE_SOURCE_URL = "https://gitlab.com/niccokunzmann/prime-breakout-highscore-server/-/raw/score/highscore.json"
 HIGH_SCORE_SOURCE_URL = os.environ.get("HIGH_SCORE_SOURCE_URL", DEFAULT_HIGH_SCORE_SOURCE_URL)
 CACHE_REQUESTED_URLS_FOR_SECONDS = int(os.environ.get("CACHE_REQUESTED_URLS_FOR_SECONDS", 600))
 GITLAB_API_TOKEN = os.environ.get("GITLAB_API_TOKEN", "")

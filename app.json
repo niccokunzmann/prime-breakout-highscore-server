@@ -1,0 +1,75 @@
+{
+  "name": "Prime Breakout Highscore Server",
+  "description": "This server updates the highscore of the prime breakout game.",
+  "repository": "https://gitlab.com/niccokunzmann/prime-breakout-highscore-server/",
+  "website": "https://niccokunzmann.gitlab.io/prime-breakout/",
+  "success_url": "/",
+  "env": {
+    "APP_DEBUG": {
+      "description": "Whether to use debug mode to run the app (true/false). It defaults to true.",
+      "value": "true",
+      "required": false
+    },
+    "HIGH_SCORE_SOURCE_URL": {
+      "description": "The source where to read the highscore from.",
+      "value": "https://gitlab.com/niccokunzmann/prime-breakout-highscore-server/-/raw/score/highscore.json",
+      "required": false
+    },
+    "GITLAB_API_TOKEN": {
+      "description": "The api token you retrieved from https://gitlab.com/-/profile/personal_access_tokens with the checkmark at api. If this is given, the following GITLAB_* variables will be used.",
+      "value": "",
+      "required": false
+    },
+    "GITLAB_PROJECT": {
+      "description": "The project id or slug (user/project) to update.",
+      "value": "niccokunzmann/prime-breakout-highscore-server",
+      "required": false
+    },
+    "GITLAB_PROJECT_BRANCH": {
+      "description": "The branch of the project which should be updated.",
+      "value": "score",
+      "required": false
+    },
+    "GITLAB_PROJECT_COMMIT_MESSAGE": {
+      "description": "The commit message for the commit of the updated highscore.",
+      "value": "update highscore",
+      "required": false
+    },
+    "GITLAB_PROJECT_AUTHOR_NAME": {
+      "description": "The name of the author of the commit.",
+      "value": "",
+      "required": false
+    },
+    "GITLAB_PROJECT_AUTHOR_EMAIL": {
+      "description": "The email of the author of the commit.",
+      "value": "",
+      "required": false
+    },
+    "GITLAB_HOST": {
+      "description": "The url to the gitlab host that should be used.",
+      "value": "https://gitlab.com",
+      "required": false
+    },
+    "GITLAB_PROJECT_FILE_PATH": {
+      "description": "The path to the file on the branch in the project.",
+      "value": "highscore.json",
+      "required": false
+    },
+    "HOSTNAME": {
+      "description": "If you like to replace the hostname of the app.",
+      "value": "",
+      "required": false
+    },
+    "CACHE_REQUESTED_URLS_FOR_SECONDS": {
+      "description": "To speed up loading time, the requests to urls can be cached. This also delays displaying updates.",
+      "value": "600",
+      "required": false
+    }
+  },
+  "image": "heroku/python3.9",
+  "keywords": [
+    "prime breakout",
+    "highscore",
+  ]
+}
+
