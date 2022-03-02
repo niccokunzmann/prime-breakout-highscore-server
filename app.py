@@ -6,7 +6,6 @@ import json
 import os
 import tempfile
 import requests
-from pprint import pprint
 import traceback
 import io
 import sys
@@ -111,7 +110,6 @@ def update_score_on_gitlab(new_score, additions):
         "commit_message": message,
     }
     headers = {"PRIVATE-TOKEN": GITLAB_API_TOKEN}
-    print("requests.put(", url, "json=", content, "headers=", headers)
     result = requests.put(url, json=content, headers=headers)
     result.raise_for_status()
 
