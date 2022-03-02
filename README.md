@@ -16,6 +16,8 @@ A `highscore` is a json of this form:
 ```
 {
   version: 1, // the version as an integer, increasing as the score is modified
+  api_version: 1,
+  source: "server.com/update_highscore.js", // the source url
   scores: [
     {
       id: 1, // the local id of a score in an app, not global, as int
