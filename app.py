@@ -153,6 +153,7 @@ def serve_score():
                 "traceback" : get_traceback_string(error)
             }
         }
+    result = result.copy()
     result["source"] = request.host + request.path
     result = get_update_highscore_js(result)
     response = make_response(result)
