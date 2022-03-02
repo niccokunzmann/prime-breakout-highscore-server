@@ -1,7 +1,7 @@
 {
   "apiVersion": 1,
   "source": "https://gitlab.com/niccokunzmann/prime-breakout-highscore-server/-/raw/score/highscore.json",
-  "version": 5,
+  "version": 6,
   "scores": [
     {
       "id": 1,
@@ -32,6 +32,11 @@
       "id": 3,
       "name": "Test",
       "points": 11
+    },
+    {
+      "id": 3,
+      "name": "Test",
+      "points": 1
     }
   ]
 }
