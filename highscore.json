@@ -1,7 +1,7 @@
 {
   "apiVersion": 1,
   "source": "example",
-  "version": 1,
+  "version": 2,
   "scores": [
     {
       "id": 1,
@@ -17,6 +17,11 @@
       "id": 3,
       "name": "Example Player",
       "points": 100
+    },
+    {
+      "id": 3,
+      "name": "Test",
+      "points": 111
     }
   ]
 }
