@@ -11,11 +11,11 @@ import traceback
 import io
 import sys
 import time
-from urllib.parse import urlencode
+from urllib.parse import urlencode, quote
 
 # configuration
 DEBUG = os.environ.get("APP_DEBUG", "true").lower() == "true"
-HOST = os.environ.get("HOST", "prime-breakout-highscore-server")
+HOST = os.environ.get("HOSTNAME", "prime-breakout-highscore-server")
 PORT = int(os.environ.get("PORT", "5000"))
 DEFAULT_HIGH_SCORE_SOURCE_URL = "https://gitlab.com/niccokunzmann/prime-breakout-highscore-server/-/raw/score/highscore.json";
 HIGH_SCORE_SOURCE_URL = os.environ.get("HIGH_SCORE_SOURCE_URL", DEFAULT_HIGH_SCORE_SOURCE_URL)
@@ -27,7 +27,7 @@ GITLAB_PROJECT_COMMIT_MESSAGE = os.environ.get("GITLAB_PROJECT_COMMIT_MESSAGE", 
 GITLAB_PROJECT_AUTHOR_EMAIL = os.environ.get("GITLAB_PROJECT_AUTHOR_EMAIL", os.environ.get("USER", "flask") + "@" + HOST)
 GITLAB_PROJECT_AUTHOR_NAME = os.environ.get("GITLAB_PROJECT_AUTHOR_NAME", os.environ.get("USER", "flask"))
 GITLAB_HOST = os.environ.get("GITLAB_HOST", "https://gitlab.com")
-GITLAB_PROJECT_FILE_PATH = os.environ.get("GITLAB_PROJECT_FILE_PATH", "/highscore.json")
+GITLAB_PROJECT_FILE_PATH = os.environ.get("GITLAB_PROJECT_FILE_PATH", "highscore.json")
 # constants
 HERE = os.path.dirname(__name__) or "."
 TEMPLATE_FOLDER_NAME = "templates"
@@ -80,10 +80,11 @@ def get_highscore():
 def set_highscore(new_score):
     """Set the high score."""
     global __score
+    additions = [score for score in new_score["scores"] if score not in __score["scores"]]
     __score = new_score
     __score["version"] += 1
     if GITLAB_API_TOKEN:
-        update_score_on_gitlab(new_score)
+        update_score_on_gitlab(__score, additions)
     return __score
 
 def get_update_highscore_js(score):
@@ -91,21 +92,28 @@ def get_update_highscore_js(score):
     return "/* generated */\nupdate_highscore({});".format(json.dumps(score, indent=2))
 
 
-def update_score_on_gitlab(new_score):
+def update_score_on_gitlab(new_score, additions):
     """Set the current score on gitlab.
 
     see https://docs.gitlab.com/ee/api/repository_files.html#update-existing-file-in-repository
     """
     # /projects/:id/repository/files/:file_path
-    url = GITLAB_HOST + "/api/v4/projects/" + urlencode(GITLAB_PROJECT) + "repository/files/" + urlenode(GITLAB_PROJECT_FILE_PATH)
+    url = GITLAB_HOST + "/api/v4/projects/" + quote(GITLAB_PROJECT, safe="") + \
+          "/repository/files/" + quote(GITLAB_PROJECT_FILE_PATH, safe="")
+    message = GITLAB_PROJECT_COMMIT_MESSAGE
+    if additions:
+        message += "\n\n- add " + "\n- add ".join([score["name"] + " with " + str(score["points"] + " points")])
     content = {
         "branch": GITLAB_PROJECT_BRANCH,
         "content": json.dumps(new_score, indent=2),
         "author_email": GITLAB_PROJECT_AUTHOR_EMAIL,
         "author_name": GITLAB_PROJECT_AUTHOR_NAME,
-        "commit_message": GITLAB_PROJECT_COMMIT_MESSAGE
+        "commit_message": message,
     }
-    requests.put(url, json=content, headers={"PRIVATE-TOKEN": GITLAB_API_TOKENc})
+    headers = {"PRIVATE-TOKEN": GITLAB_API_TOKEN}
+    print("requests.put(", url, "json=", content, "headers=", headers)
+    result = requests.put(url, json=content, headers=headers)
+    result.raise_for_status()
 
 def add_scores(scores):
     """Add a list of scores."""
@@ -122,7 +130,7 @@ def add_scores(scores):
         if new_score not in current["scores"]:
             current["scores"].append(score)
     set_highscore(current)
-    return scores
+    return current
 
 
 @app.route("/")
@@ -132,7 +140,6 @@ def serve_index():
 @app.route("/update_highscore.js")
 def serve_score():
     try:
-        print(request.args)
         if "scores" in request.args:
             result = add_scores(json.loads(request.args["scores"]))
         else:
