@@ -69,7 +69,7 @@
   "image": "heroku/python3.10",
   "keywords": [
     "prime breakout",
-    "highscore",
+    "highscore"
   ]
 }
 
