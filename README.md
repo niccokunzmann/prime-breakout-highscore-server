@@ -4,6 +4,8 @@ This server only serves the high score of the game
 [Prime Breakout][prime-breakout].
 Feel free to fork it, modify it and use it.
 
+There is an auto-deployed version running as [prime-breakout-highscore.horokuapp.com](https://prime-breakout-highscore.herokuapp.com).
+
 ## Deployment
 
 You can deploy the app using Heroku.
