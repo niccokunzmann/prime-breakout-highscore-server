@@ -1,0 +1,13 @@
+image: ubuntu
+
+pages:
+  stage: deploy
+  script:
+  - bash ci/create_gitlab_pages.sh
+  # use public directory
+  # see https://docs.gitlab.com/ee/user/project/pages/introduction.html#gitlab-pages-requirements
+  artifacts:
+    paths:
+    - public
+  only:
+  - score
