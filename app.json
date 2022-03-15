@@ -60,6 +60,11 @@
       "value": "",
       "required": false
     },
+    "MAX_PLAYER_NAME_LENGTH": {
+      "description": "The maximum length of a name of a player. The name will be shortened.",
+      "value": "40",
+      "required": false
+    },
     "CACHE_REQUESTED_URLS_FOR_SECONDS": {
       "description": "To speed up loading time, the requests to urls can be cached. This also delays displaying updates.",
       "value": "600",

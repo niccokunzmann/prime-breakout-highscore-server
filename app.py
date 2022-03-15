@@ -16,6 +16,7 @@ from urllib.parse import urlencode, quote
 DEBUG = os.environ.get("APP_DEBUG", "true").lower() == "true"
 HOST = os.environ.get("HOSTNAME", "prime-breakout-highscore-server")
 PORT = int(os.environ.get("PORT", "5000"))
+MAX_PLAYER_NAME_LENGTH = int(os.environ.get("MAX_PLAYER_NAME_LENGTH", "40"))
 DEFAULT_HIGH_SCORE_SOURCE_URL = "https://gitlab.com/niccokunzmann/prime-breakout-highscore-server/-/raw/score/highscore.json"
 HIGH_SCORE_SOURCE_URL = os.environ.get("HIGH_SCORE_SOURCE_URL", DEFAULT_HIGH_SCORE_SOURCE_URL)
 CACHE_REQUESTED_URLS_FOR_SECONDS = int(os.environ.get("CACHE_REQUESTED_URLS_FOR_SECONDS", 600))
@@ -119,9 +120,9 @@ def add_scores(scores):
     for i, score in enumerate(scores):
         assert "name" in score and isinstance(score["name"], str), "score {} must have a name as string".format(i)
         assert "id" in score and isinstance(score["id"], int), "score {} must have an id as int".format(i)
-        assert "points" in score and isinstance(score["points"], int), "score {} must have points as int".format(i)
+        assert "points" in score and isinstance(score["points"], int) and score["points"] >= 0, "score {} must have a positive number of points".format(i)
         new_score = {
-            "name" : score["name"],
+            "name" : score["name"][:MAX_PLAYER_NAME_LENGTH],
             "id" : score["id"],
             "points" : score["points"]
         }
